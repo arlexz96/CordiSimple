@@ -37,4 +37,29 @@ class EventController extends Controller
         // Redirigimos a la lista de categorías con un mensaje de éxito
         return redirect()->route('events.adminIndex')->with('success', 'Categoría eliminada con éxito.');
     }
+
+
+    public function edit(string $id)
+    {
+        // Obtenemos la categoría por ID
+        $event = Event::findOrFail($id);
+        // Retornamos la vista para editar la categoría
+        return view('events.edit', compact('event'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(EventRequest $request, string $id)
+    {
+        $validatedData = $request->validated();
+
+        $event = Event::findOrFail($id);
+        $event->location->update($validatedData);
+        $event->eventCapacity->update($validatedData);
+        $event->update($validatedData);
+
+        return redirect()->route('events.adminIndex')->with('success', 'Categoría actualizada exitosamente.');
+    }
+
 }
