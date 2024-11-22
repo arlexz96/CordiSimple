@@ -93,6 +93,12 @@ class EventController extends Controller
 
         return redirect()->route('events.index')->with('success', 'Categoría creada con éxito.');
     }
-
+    
+    public function show(string $id)
+    {
+        $event = Event::findOrFail($id);
+        // Mostramos la vista de detalles con la categoría específica
+        return view('events.show', compact('event'));
+    }
 
 }
