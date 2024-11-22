@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
-
+use App\Models\EventCapacity;
+use App\Models\Location;
 
 class EventController extends Controller
 {
@@ -61,5 +63,36 @@ class EventController extends Controller
 
         return redirect()->route('events.adminIndex')->with('success', 'Categoría actualizada exitosamente.');
     }
+    public function create()
+    {
+        return view('events.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(EventRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $location = Location::create([
+            'country' => $request->input('country'),
+            'city' => $request->input('city')
+        ]);
+
+        $eventCapacity = EventCapacity::create([
+            'max_people' => $request->input('max_people'),
+            'places_availables' => $request->input(('max_people'))
+        ]);
+
+        /* Event::create($validatedData); */
+        Event::create(array_merge($validatedData, [
+            'location_id' => $location->id,
+            'event_capacity_id' =>$eventCapacity->id,
+        ]));
+
+        return redirect()->route('events.index')->with('success', 'Categoría creada con éxito.');
+    }
+
 
 }
