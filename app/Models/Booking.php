@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Booking extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -17,13 +17,8 @@ class Event extends Model
     // public $timestamps = true;
     // protected $guarded = [];
     protected $fillable = [
-        'name',
-        'description',
-        'date_event',
-        'is_active',
-        'location_id',
-        'event_capacity_id',
-        'image'
+        'id_user',
+        'id_event',
         // Otros campos...
     ];
 
@@ -43,19 +38,14 @@ class Event extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function location()
+    public function user()
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(User::class);
     }
-    public function eventCapacity()
+    public function event()
     {
-        return $this->belongsTo(EventCapacity::class);
+        return $this->belongsTo(Event::class);
     }
-    public function booking()
-    {
-        return $this->hasMany(Booking::class);
-    }
-
 
     /*
     |--------------------------------------------------------------------------
