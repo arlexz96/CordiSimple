@@ -11,9 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_events', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string("name",255);
+            $table->text("description");
+            $table->date("date_event");
+            $table->boolean("is_active");
+            $table->unsignedBigInteger("location_id")->nullable();
+            $table->unsignedBigInteger("event_capacity_id")->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
+
+            
+            $table->foreign('location_id')
+                ->references('id')
+                ->on('locations')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+                $table->foreign('event_capacity_id')
+                ->references('id')
+                ->on('events_capacity')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
         });
     }
 
@@ -22,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_events');
+        Schema::dropIfExists('events');
     }
 };
