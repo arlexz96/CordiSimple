@@ -11,21 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user')-> nullable();
-            $table->unsignedBigInteger('id_event') -> nullable();
+            $table->string("name",255);
+            $table->text("description");
+            $table->date("date_event");
+            $table->boolean("is_active");
+            $table->unsignedBigInteger("location_id")->nullable();
+            $table->unsignedBigInteger("event_capacity_id")->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_user')
+            
+            $table->foreign('location_id')
                 ->references('id')
-                ->on('users')
+                ->on('locations')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
-            
-                $table->foreign('id_event')
+
+                $table->foreign('event_capacity_id')
                 ->references('id')
-                ->on('events')
+                ->on('events_capacity')
                 ->onDelete('set null')
                 ->onUpdate('cascade');
         });
@@ -36,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('events');
     }
 };
